@@ -28,6 +28,20 @@ export function list(items: string[], lang: Lang): string {
   }
 }
 
+/** Dollar amounts and ranges, e.g. "$10K", "$1,000 – $9,999", "$100,000+". */
+const MONEY = /\$\d[\d.,]*[KM]?\+?(?:\s?[–-]\s?\$\d[\d.,]*[KM]?\+?)?/g
+
+/**
+ * Wrap dollar amounts in left-to-right isolates (U+2066…U+2069) so "$100K–$250K"
+ * keeps its order inside Arabic sentences. Harmless in English.
+ */
+export function ltr(text: string): string {
+  return text.replace(MONEY, (m) => `\u2066${m}\u2069`)
+}
+
+/** Isolate amounts only where it matters, keeping English copy free of invisible characters. */
+export const bidi = (text: string, lang: Lang) => (lang === 'ar' ? ltr(text) : text)
+
 /** Glossary markup: [[termId:visible text]]. */
 export const TERM_PATTERN = /\[\[([a-z]+):([^\]]+)\]\]/g
 
@@ -37,6 +51,10 @@ export function plain(text: string): string {
 }
 
 export function formatReason(r: Reason, lang: Lang): string {
+  return bidi(reasonText(r, lang), lang)
+}
+
+function reasonText(r: Reason, lang: Lang): string {
   const m = MESSAGES[lang]
   const p = m.phrases
   switch (r.code) {
@@ -66,7 +84,7 @@ export function formatReason(r: Reason, lang: Lang): string {
 }
 
 export function formatGap(g: Gap, lang: Lang): string {
-  return capitalize(gapPhrase(g, lang))
+  return bidi(capitalize(gapPhrase(g, lang)), lang)
 }
 
 function gapPhrase(g: Gap, lang: Lang): string {
@@ -83,7 +101,7 @@ function gapPhrase(g: Gap, lang: Lang): string {
 
 /** e.g. "Reach $10K MRR to qualify for Tech Non-Dilutive Fund." */
 export function formatUnlock(gaps: Gap[], fundName: string, lang: Lang): string {
-  return capitalize(MESSAGES[lang].gaps.toQualify(list(gaps.map((g) => gapPhrase(g, lang)), lang), fundName))
+  return bidi(capitalize(MESSAGES[lang].gaps.toQualify(list(gaps.map((g) => gapPhrase(g, lang)), lang), fundName)), lang)
 }
 
 const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)

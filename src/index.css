@@ -1,0 +1,74 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-bg: #0b0b0f;
+  --color-surface: #16161d;
+  --color-surface-2: #1d1d26;
+  --color-line: #26262f;
+  --color-line-strong: #3a3a46;
+  --color-accent: #c084fc;
+  --color-accent-soft: rgb(192 132 252 / 0.12);
+  --color-ink: #ffffff;
+  --color-muted: #a1a1aa;
+  --color-subtle: #8b8b96;
+  --radius-card: 14px;
+  --font-sans: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-arabic: 'IBM Plex Sans Arabic', 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    background: var(--color-bg);
+    color: var(--color-ink);
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background: var(--color-bg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  html[dir='rtl'] body,
+  [dir='rtl'] {
+    font-family: var(--font-arabic);
+  }
+  ::selection {
+    background: rgb(192 132 252 / 0.35);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  button {
+    cursor: pointer;
+  }
+  dialog {
+    color: inherit;
+  }
+  dialog::backdrop {
+    background: rgb(0 0 0 / 0.65);
+    backdrop-filter: blur(4px);
+  }
+}
+
+@layer utilities {
+  /* Flip directional glyphs (arrows, chevrons) in RTL. */
+  .flip-rtl:where([dir='rtl'] *) {
+    transform: scaleX(-1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
