@@ -1,4 +1,5 @@
 import { Link } from 'wouter'
+import { FUNDS } from '../data/funds'
 import { useLang } from '../i18n/LangContext'
 import { estimatedLength } from '../lib/questions'
 import type { Answers } from '../lib/types'
@@ -8,35 +9,42 @@ export function Welcome({ answers, onStart }: { answers: Answers; onStart: () =>
   const { t } = useLang()
   const { questions, minutes } = estimatedLength(answers)
   return (
-    <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center px-4 py-10 sm:px-6">
-      <p className="mb-4 inline-flex w-fit items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 text-xs font-medium text-muted">
-        <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
-        {t.welcome.eyebrow}
-      </p>
-      <h1 className="text-4xl leading-[1.08] font-semibold tracking-tight text-balance sm:text-6xl">{t.welcome.title}</h1>
-      <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted">{t.welcome.subtitle}</p>
+    <div className="mx-auto grid w-full max-w-5xl flex-1 gap-12 px-4 py-10 sm:px-8 sm:py-16 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:gap-16">
+      <div className="flex flex-col justify-center">
+        <h1 className="text-[clamp(2.4rem,7.5vw,4.25rem)] leading-[1.02] tracking-[-0.02em] text-balance">
+          {t.welcome.title}
+        </h1>
+        <p className="mt-5 max-w-[34rem] text-lg leading-relaxed text-ink-2">{t.welcome.subtitle}</p>
 
-      <div className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-3">
-        <button
-          type="button"
-          autoFocus
-          onClick={onStart}
-          className="inline-flex h-14 items-center gap-2.5 rounded-full bg-accent px-8 text-base font-semibold text-bg shadow-[0_8px_30px_rgba(192,132,252,0.25)] transition hover:opacity-90"
-        >
-          {t.welcome.start}
-          <ArrowRight className="flip-rtl" />
-        </button>
-        <span className="text-sm text-muted tabular-nums">{t.welcome.length(questions, minutes)}</span>
+        <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
+          <button type="button" autoFocus onClick={onStart} className="btn btn-primary min-h-13 px-7 text-base">
+            {t.welcome.start}
+            <ArrowRight className="flip-rtl" />
+          </button>
+          <span className="text-sm text-ink-2">{t.welcome.length(questions, minutes)}</span>
+        </div>
+        <p className="mt-5 text-sm text-ink-3">{t.welcome.disclaimer}</p>
       </div>
-      <p className="mt-4 text-sm text-subtle">{t.welcome.disclaimer}</p>
 
-      <Link
-        href="/funds"
-        className="mt-10 inline-flex min-h-12 w-fit items-center gap-2 text-sm font-medium text-accent underline-offset-4 hover:underline"
-      >
-        {t.welcome.browse}
-        <ArrowRight width={16} height={16} className="flip-rtl" />
-      </Link>
+      <aside aria-labelledby="covered" className="self-center">
+        <h2 id="covered" className="border-b border-ink pb-2 text-lg">
+          {t.welcome.covered(FUNDS.length)}
+        </h2>
+        <ol className="text-[15px]">
+          {FUNDS.map((f) => (
+            <li key={f.id} className="flex items-baseline justify-between gap-4 border-b border-rule py-2">
+              <span lang="en" dir="ltr" className="min-w-0 truncate text-ink">
+                {f.name}
+              </span>
+              <span className="shrink-0 text-[13px] text-ink-3">{t.fundType[f.type]}</span>
+            </li>
+          ))}
+        </ol>
+        <Link href="/funds" className="link mt-2 text-[15px]">
+          {t.welcome.browse}
+          <ArrowRight width={16} height={16} className="flip-rtl" />
+        </Link>
+      </aside>
     </div>
   )
 }

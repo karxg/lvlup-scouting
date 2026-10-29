@@ -1,0 +1,30 @@
+/* Hallmark · tokens · theme: Newsprint (light paper · roman serif · warm brick accent) */
+@theme {
+  /* Paper and ink */
+  --color-paper: oklch(97.6% 0.008 85);
+  --color-paper-2: oklch(95.2% 0.012 85);
+  --color-paper-3: oklch(92.6% 0.014 85);
+  --color-ink: oklch(22% 0.012 60);
+  --color-ink-2: oklch(40% 0.012 60);
+  --color-ink-3: oklch(49% 0.012 60);
+  --color-rule: oklch(86.5% 0.012 75);
+  --color-rule-strong: oklch(57% 0.012 60);
+
+  /* One accent, used for amounts, the selected answer and focus. */
+  --color-accent: oklch(47% 0.15 28);
+  --color-accent-tint: oklch(95% 0.025 28);
+  --color-focus: oklch(47% 0.15 28);
+  --color-scrim: oklch(22% 0.012 60 / 0.45);
+
+  /* Type: Latin and Arabic faces share each stack; unicode-range picks per glyph. */
+  --font-display: 'Newsreader Variable', 'Noto Naskh Arabic', Georgia, serif;
+  --font-body: 'IBM Plex Sans', 'IBM Plex Sans Arabic', system-ui, sans-serif;
+  --font-sans: 'IBM Plex Sans', 'IBM Plex Sans Arabic', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'IBM Plex Sans Arabic', ui-monospace, monospace;
+
+  --radius-sm: 2px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in: cubic-bezier(0.55, 0, 1, 0.45);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}

@@ -42,6 +42,10 @@ After changing rules or weights, run `npm test`. The ten founder scenarios in `s
 
 When you re-check the programs against lvlup.vc, update `DATA_LAST_UPDATED` at the top of `src/data/funds.ts` (e.g. `"January 2027"`). It appears in the About dialog, the copied results and the funds page.
 
+### Look and feel: `src/tokens.css`
+
+Colours, fonts, radius and easings are tokens in `src/tokens.css` (Tailwind v4 `@theme`), so `bg-paper`, `text-ink-2`, `border-rule`, `text-accent` etc. come from there. Change a value once and the whole app follows. Fonts are self-hosted via Fontsource: Newsreader + Noto Naskh Arabic for headings, IBM Plex Sans + IBM Plex Sans Arabic for body, IBM Plex Mono for small numerals. `public/favicon.svg` and `index.html`'s `theme-color` repeat the paper/ink/accent values as literals because they can't read CSS variables. After changing the palette, update them and run `npm run images`.
+
 ### Copy: `src/i18n/en.ts` and `src/i18n/ar.ts`
 
 All interface text, question copy, glossary definitions, reason sentences and disclaimers. `ar.ts` is type-checked against `en.ts`, so a missing Arabic string fails the build. Keep Western digits and `$`, and keep fund names in English.

@@ -32,6 +32,7 @@ export const ar: Messages = {
     start: 'ابدأ',
     resume: 'تابع من حيث توقفت',
     disclaimer: 'دليل مستقل، وليس أداة رسمية تابعة لـ LvlUp Ventures.',
+    covered: (n: number) => `البرامج الـ${n} التي يغطيها هذا الدليل`,
     browse: 'تصفّح جميع البرامج',
   },
   nav: {

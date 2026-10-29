@@ -30,6 +30,7 @@ export const en = {
     start: 'Start',
     resume: 'Continue where you left off',
     disclaimer: 'Independent guide. Not an official LvlUp Ventures tool.',
+    covered: (n: number) => `The ${n} programs this guide covers`,
     browse: 'Browse all programs',
   },
   nav: {

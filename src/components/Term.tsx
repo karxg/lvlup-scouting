@@ -81,7 +81,7 @@ export function TermInfo({ id, className = '' }: { id: TermId; className?: strin
         onMouseLeave={() => {
           if (!pinned.current) setOpen(false)
         }}
-        className={`relative ms-0.5 inline-flex h-6 w-5 shrink-0 translate-y-[-1px] items-center justify-center rounded-full align-middle text-accent/80 transition-colors before:absolute before:-inset-2.5 before:content-[''] hover:text-accent ${className}`}
+        className={`relative ms-0.5 inline-flex h-6 w-4 shrink-0 translate-y-[-1px] items-center justify-center align-middle text-ink-3 transition-colors before:absolute before:-inset-2.5 before:content-[''] hover:text-accent aria-expanded:text-accent ${className}`}
       >
         <Info />
       </button>
@@ -92,9 +92,9 @@ export function TermInfo({ id, className = '' }: { id: TermId; className?: strin
             id={popId}
             role="tooltip"
             style={{ top: pos.top, left: pos.left, width: Math.min(WIDTH, window.innerWidth - GUTTER * 2) }}
-            className="fixed z-[100] rounded-xl border border-line-strong bg-surface-2 p-3 text-start text-sm leading-relaxed font-normal text-ink shadow-2xl shadow-black/60"
+            className="fixed z-[100] border border-ink bg-paper p-3 text-start font-[family-name:var(--font-body)] text-sm leading-relaxed font-normal text-ink-2"
           >
-            <span className="mb-1 block font-semibold text-accent">{entry.term}</span>
+            <span className="mb-0.5 block font-semibold text-ink">{entry.term}</span>
             {entry.def}
           </div>,
           pos.container,

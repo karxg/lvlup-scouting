@@ -1,6 +1,7 @@
+import { MESSAGES } from '../i18n'
 import { useLang } from '../i18n/LangContext'
 import type { Lang } from '../lib/types'
-import { MESSAGES } from '../i18n'
+import { ArrowRight } from './Icons'
 
 export function LanguageChoice({ onChosen }: { onChosen: () => void }) {
   const { setLang } = useLang()
@@ -8,34 +9,26 @@ export function LanguageChoice({ onChosen }: { onChosen: () => void }) {
     setLang(l)
     onChosen()
   }
+  const row =
+    'flex min-h-16 w-full items-center justify-between gap-4 border-b border-rule px-1 text-start text-2xl transition-colors hover:bg-paper-2'
   return (
-    <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center px-4 py-10 text-center">
-      <h1 className="text-2xl font-semibold tracking-tight">
-        <span lang="en" dir="ltr" className="block font-sans">
+    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col justify-center px-4 py-12 sm:px-8">
+      <h1 className="text-[28px] leading-tight">
+        <span lang="en" dir="ltr" className="block">
           {MESSAGES.en.lang.chooseTitle}
         </span>
-        <span lang="ar" dir="rtl" className="mt-1 block text-muted">
+        <span lang="ar" dir="rtl" className="block text-ink-2">
           {MESSAGES.ar.lang.chooseTitle}
         </span>
       </h1>
-      <div className="mt-8 grid gap-3">
-        <button
-          type="button"
-          lang="en"
-          dir="ltr"
-          onClick={() => pick('en')}
-          className="h-16 rounded-[var(--radius-card)] border border-line bg-surface font-sans text-lg font-medium transition-colors hover:border-accent hover:bg-accent-soft"
-        >
+      <div className="mt-8 border-t border-ink">
+        <button type="button" lang="en" dir="ltr" onClick={() => pick('en')} className={`${row} font-[family-name:var(--font-display)]`}>
           English
+          <ArrowRight />
         </button>
-        <button
-          type="button"
-          lang="ar"
-          dir="rtl"
-          onClick={() => pick('ar')}
-          className="h-16 rounded-[var(--radius-card)] border border-line bg-surface text-lg font-medium transition-colors hover:border-accent hover:bg-accent-soft"
-        >
+        <button type="button" lang="ar" dir="rtl" onClick={() => pick('ar')} className={`${row} font-[family-name:var(--font-display)] font-semibold`}>
           العربية
+          <ArrowRight className="-scale-x-100" />
         </button>
       </div>
     </div>

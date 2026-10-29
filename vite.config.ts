@@ -17,7 +17,7 @@ function cloudflareAnalytics(token: string | undefined): Plugin {
 
 /**
  * Inline head script: applies the saved/URL language's dir before React mounts and
- * preloads only that language's fonts. Prevents a left-to-right flash and layout shift.
+ * preloads only that language's heading font. Prevents a left-to-right flash and layout shift.
  */
 function earlyLanguage(base: string): Plugin {
   return {
@@ -25,10 +25,10 @@ function earlyLanguage(base: string): Plugin {
     transformIndexHtml(html, ctx) {
       const files = Object.keys(ctx.bundle ?? {})
       const pick = (re: RegExp) => files.filter((f) => re.test(f)).map((f) => base + f)
-      const inter = pick(/inter-latin-wght-normal-[^/]*\.woff2$/)
+      // Preload only the heading face: it paints the largest text (LCP). Body text swaps in quietly.
       const fonts = {
-        en: inter,
-        ar: [...pick(/ibm-plex-sans-arabic-arabic-(400|600)-normal-[^/]*\.woff2$/), ...inter],
+        en: pick(/newsreader-latin-wght-normal-[^/]*\.woff2$/),
+        ar: pick(/noto-naskh-arabic-arabic-600-normal-[^/]*\.woff2$/),
       }
       const script = `(function(){var f=${JSON.stringify(fonts)},l=new URLSearchParams(location.search).get('lang');if(l!=='ar'&&l!=='en'){try{l=JSON.parse(localStorage.getItem('fundmatch:lang'))}catch(e){}}if(l==='ar'){document.documentElement.lang='ar';document.documentElement.dir='rtl'}(l==='ar'?f.ar:f.en).forEach(function(h){var k=document.createElement('link');k.rel='preload';k.as='font';k.type='font/woff2';k.crossOrigin='';k.href=h;document.head.appendChild(k)})})()`
       return html.replace('</title>', `</title>\n    <script>${script}</script>`)

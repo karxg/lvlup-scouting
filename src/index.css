@@ -1,48 +1,50 @@
+/* Hallmark · macrostructure: Long Document (ruled answer sheet + memo-style results) · tone: editorial/utilitarian · anchor hue: brick 28°
+ * theme: Newsprint · nav: masthead line · footer: colophon line · enrichment: none (typography only)
+ * Hallmark · pre-emit critique: P4 H4 E4 S4 R5 V4
+ */
 @import 'tailwindcss';
-
-@theme {
-  --color-bg: #0b0b0f;
-  --color-surface: #16161d;
-  --color-surface-2: #1d1d26;
-  --color-line: #26262f;
-  --color-line-strong: #3a3a46;
-  --color-accent: #c084fc;
-  --color-accent-soft: rgb(192 132 252 / 0.12);
-  --color-ink: #ffffff;
-  --color-muted: #a1a1aa;
-  --color-subtle: #8b8b96;
-  --radius-card: 14px;
-  --font-sans: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-arabic: 'IBM Plex Sans Arabic', 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
-}
+@import './tokens.css';
 
 @layer base {
   html {
-    background: var(--color-bg);
+    background: var(--color-paper);
     color: var(--color-ink);
-    color-scheme: dark;
+    color-scheme: light;
     -webkit-text-size-adjust: 100%;
-    text-rendering: optimizeLegibility;
+    overflow-x: clip;
   }
   body {
     margin: 0;
     min-height: 100dvh;
-    background: var(--color-bg);
-    font-family: var(--font-sans);
+    background: var(--color-paper);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.55;
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
-  html[dir='rtl'] body,
-  [dir='rtl'] {
-    font-family: var(--font-arabic);
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-style: normal;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+  [dir='rtl'] h1,
+  [dir='rtl'] h2,
+  [dir='rtl'] h3 {
+    font-weight: 600;
+    line-height: 1.35;
   }
   ::selection {
-    background: rgb(192 132 252 / 0.35);
+    background: var(--color-accent-tint);
+    color: var(--color-ink);
   }
   :focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 3px;
-    border-radius: 6px;
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
   }
   button {
     cursor: pointer;
@@ -51,13 +53,78 @@
     color: inherit;
   }
   dialog::backdrop {
-    background: rgb(0 0 0 / 0.65);
-    backdrop-filter: blur(4px);
+    background: var(--color-scrim);
+  }
+}
+
+@layer components {
+  /* Primary action: a solid ink block. */
+  .btn {
+    display: inline-flex;
+    min-height: 3rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: var(--radius-sm);
+    padding-inline: 1.25rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition:
+      background-color 150ms var(--ease-out),
+      color 150ms var(--ease-out),
+      border-color 150ms var(--ease-out);
+  }
+  .btn:active {
+    transform: translateY(1px);
+  }
+  .btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+    transform: none;
+  }
+  .btn-primary {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: var(--color-accent);
+  }
+  .btn-secondary {
+    border: 1px solid var(--color-rule-strong);
+    color: var(--color-ink);
+  }
+  .btn-secondary:hover:not(:disabled) {
+    border-color: var(--color-ink);
+    background: var(--color-paper-2);
+  }
+  /* Text link with a drawn underline. */
+  .link {
+    display: inline-flex;
+    min-height: 3rem;
+    align-items: center;
+    gap: 0.375rem;
+    color: var(--color-ink);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: var(--color-rule-strong);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.3em;
+    white-space: nowrap;
+  }
+  .link:hover {
+    text-decoration-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+  .num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
   }
 }
 
 @layer utilities {
-  /* Flip directional glyphs (arrows, chevrons) in RTL. */
+  /* Flip directional glyphs (arrows) in RTL. */
   .flip-rtl:where([dir='rtl'] *) {
     transform: scaleX(-1);
   }

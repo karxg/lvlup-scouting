@@ -13,15 +13,17 @@ export function AboutDialog({ open, onClose }: { open: boolean; onClose: () => v
   ]
   return (
     <Dialog open={open} onClose={onClose} title={a.title}>
-      <div className="max-h-[65dvh] space-y-4 overflow-y-auto text-[15px] leading-relaxed">
+      <dl className="max-h-[65dvh] divide-y divide-rule overflow-y-auto text-[15px] leading-relaxed">
         {sections.map(([title, body]) => (
-          <section key={title}>
-            <h3 className="mb-1 text-sm font-semibold text-accent">{title}</h3>
-            <p className="text-muted">{body}</p>
-          </section>
+          <div key={title} className="py-3 first:pt-0">
+            <dt className="font-semibold text-ink">{title}</dt>
+            <dd className="mt-0.5 text-ink-2">{body}</dd>
+          </div>
         ))}
-        <p className="border-t border-line pt-4 text-sm font-medium text-ink">{a.advice}</p>
-      </div>
+        <div className="py-3 last:pb-0">
+          <dd className="font-medium text-ink">{a.advice}</dd>
+        </div>
+      </dl>
     </Dialog>
   )
 }

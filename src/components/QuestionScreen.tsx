@@ -121,28 +121,23 @@ export function QuestionScreen({ question: q, answers, index, total, onChange, o
     <div
       ref={root}
       tabIndex={-1}
-      className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center px-4 py-8 outline-none sm:px-6"
+      className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center px-4 py-10 outline-none sm:px-8"
     >
-      <p className="mb-3 text-sm font-medium text-accent">
-        <span className="tabular-nums">{t.nav.progress(index + 1, total)}</span>
-      </p>
-      <h1 id={titleId} className="text-[26px] leading-tight font-semibold tracking-tight text-balance sm:text-4xl">
+      <p className="mb-3 text-sm text-ink-3">{t.nav.progress(index + 1, total)}</p>
+      <h1 id={titleId} className="text-[clamp(1.85rem,5.5vw,2.75rem)] leading-[1.1] tracking-[-0.015em] text-balance">
         <Rich text={copy.title} />
       </h1>
       {(subtitle || hint) && (
-        <p className="mt-3 text-base text-muted">
+        <p className="mt-3 text-base text-ink-2">
           {subtitle && <Rich text={subtitle} />}
           {subtitle && hint && ' '}
           {hint}
         </p>
       )}
       {q.terms && (
-        <ul className="mt-4 flex flex-wrap gap-2">
+        <ul className="mt-3 flex flex-wrap gap-x-4 text-sm text-ink-2">
           {q.terms.map((id) => (
-            <li
-              key={id}
-              className="inline-flex items-center rounded-full border border-line bg-surface ps-3 pe-1 text-sm text-muted"
-            >
+            <li key={id} className="inline-flex items-center">
               {t.glossary.terms[id].term}
               <TermInfo id={id} />
             </li>
@@ -150,11 +145,7 @@ export function QuestionScreen({ question: q, answers, index, total, onChange, o
         </ul>
       )}
 
-      <div
-        role={multi ? 'group' : 'radiogroup'}
-        aria-labelledby={titleId}
-        className="mt-7 grid gap-2.5"
-      >
+      <div role={multi ? 'group' : 'radiogroup'} aria-labelledby={titleId} className="mt-7 border-t border-ink">
         {q.options.map((opt, i) => {
           const isSel = selected.includes(opt)
           const disabled = !isSel && atMax
@@ -170,32 +161,31 @@ export function QuestionScreen({ question: q, answers, index, total, onChange, o
               aria-checked={isSel}
               aria-disabled={disabled || undefined}
               onClick={() => choose(opt)}
-              animate={confirming === opt && !reduce ? { scale: [1, 0.985, 1] } : undefined}
+              animate={confirming === opt && !reduce ? { opacity: [1, 0.55, 1] } : undefined}
               transition={{ duration: 0.3 }}
-              className={`group flex min-h-14 w-full items-center gap-3.5 rounded-[var(--radius-card)] border px-4 py-3 text-start transition-colors duration-150 ${
-                isSel
-                  ? 'border-accent bg-accent-soft'
-                  : disabled
-                    ? 'cursor-not-allowed border-line bg-surface opacity-45'
-                    : 'border-line bg-surface hover:border-line-strong hover:bg-surface-2'
+              className={`group flex min-h-14 w-full items-center gap-4 border-b border-rule px-2 py-3 text-start transition-colors duration-150 focus-visible:-outline-offset-2 ${
+                isSel ? 'bg-accent-tint' : disabled ? 'cursor-not-allowed opacity-40' : 'hover:bg-paper-2'
               }`}
             >
               <span
                 aria-hidden="true"
-                className={`inline-flex h-7 min-w-7 shrink-0 items-center justify-center rounded-md border text-[13px] font-semibold transition-colors ${
-                  isSel ? 'border-accent bg-accent text-bg' : 'border-line-strong text-muted group-hover:text-ink'
+                className={`num inline-flex h-7 min-w-7 shrink-0 items-center justify-center rounded-[var(--radius-sm)] border text-[13px] transition-colors ${
+                  isSel ? 'border-accent bg-accent text-paper' : 'border-rule-strong text-ink-2 group-hover:border-ink group-hover:text-ink'
                 }`}
               >
                 {t.letters[i]}
               </span>
               <span className="flex min-w-0 flex-1 flex-col">
-                <span className="text-[16px] leading-snug font-medium text-ink"><Rich text={o.label} /></span>
-                {o.hint && <span className="mt-0.5 text-sm leading-snug text-muted"><Rich text={o.hint} /></span>}
+                <span className="text-[17px] leading-snug font-medium text-ink">
+                  <Rich text={o.label} />
+                </span>
+                {o.hint && (
+                  <span className="mt-0.5 text-sm leading-snug text-ink-2">
+                    <Rich text={o.hint} />
+                  </span>
+                )}
               </span>
-              <span
-                aria-hidden="true"
-                className={`shrink-0 text-accent transition-opacity ${isSel ? 'opacity-100' : 'opacity-0'}`}
-              >
+              <span aria-hidden="true" className={`shrink-0 text-accent ${isSel ? 'opacity-100' : 'opacity-0'}`}>
                 <Check />
               </span>
             </m.button>
@@ -203,33 +193,22 @@ export function QuestionScreen({ question: q, answers, index, total, onChange, o
         })}
       </div>
 
-      <div className="mt-7 flex flex-wrap items-center gap-3">
-        <button
-          type="button"
-          onClick={onBack}
-          className="inline-flex h-12 items-center gap-2 rounded-full border border-line px-5 text-sm font-medium text-ink hover:border-line-strong hover:bg-surface"
-        >
-          <ArrowLeft className="flip-rtl" />
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+        <button type="button" onClick={onBack} className="link text-[15px]">
+          <ArrowLeft className="flip-rtl" width={18} height={18} />
           {t.nav.back}
         </button>
         {multi && (
-          <>
-            <button
-              type="button"
-              onClick={onNext}
-              disabled={selected.length === 0}
-              className="inline-flex h-12 items-center gap-2 rounded-full bg-accent px-6 text-sm font-semibold text-bg transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
-            >
+          <div className="flex items-center gap-4">
+            {selected.length > 0 && <span className="hidden text-sm text-ink-3 sm:inline">{t.nav.pressEnter}</span>}
+            <button type="button" onClick={onNext} disabled={selected.length === 0} className="btn btn-primary px-6">
               {t.nav.ok}
               <Check width={18} height={18} />
             </button>
-            {selected.length > 0 && (
-              <span className="hidden text-xs text-subtle sm:inline">{t.nav.pressEnter}</span>
-            )}
-          </>
+          </div>
         )}
       </div>
-      <p className="mt-6 hidden text-xs text-subtle sm:block">{t.nav.keyHint}</p>
+      <p className="mt-8 hidden text-[13px] text-ink-3 sm:block">{t.nav.keyHint}</p>
     </div>
   )
 }

@@ -7,27 +7,31 @@ const path = require('node:path')
 const fs = require('node:fs')
 
 const root = path.resolve(__dirname, '..')
-const font = (rel) => 'file://' + path.join(root, 'node_modules', rel)
-const interUrl = font('@fontsource-variable/inter/files/inter-latin-wght-normal.woff2')
-const arabicUrl = font('@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-500-normal.woff2')
+// Inline as data URLs: pages created with setContent can't load file:// fonts.
+const font = (rel) =>
+  'data:font/woff2;base64,' + fs.readFileSync(path.join(root, 'node_modules', rel)).toString('base64')
+const serifUrl = font('@fontsource-variable/newsreader/files/newsreader-latin-wght-normal.woff2')
+const sansUrl = font('@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff2')
+const naskhUrl = font('@fontsource/noto-naskh-arabic/files/noto-naskh-arabic-arabic-600-normal.woff2')
 const mark = fs.readFileSync(path.join(root, 'public/favicon.svg'), 'utf8')
 
+// Colours mirror src/tokens.css (paper, ink, ink-2, ink-3, rule, accent).
 const og = `<!doctype html><html><head><style>
-@font-face{font-family:Inter;src:url(${interUrl}) format('woff2');font-weight:100 900}
-@font-face{font-family:Plex;src:url(${arabicUrl}) format('woff2');font-weight:500}
+@font-face{font-family:NR;src:url(${serifUrl}) format('woff2');font-weight:200 800}
+@font-face{font-family:Sans;src:url(${sansUrl}) format('woff2');font-weight:400}
+@font-face{font-family:Naskh;src:url(${naskhUrl}) format('woff2');font-weight:600}
 *{margin:0;box-sizing:border-box}
-body{width:1200px;height:630px;font-family:Inter,sans-serif;color:#fff;padding:72px 80px;display:flex;flex-direction:column;
-background:radial-gradient(700px 480px at 92% -8%,rgba(192,132,252,.32),transparent 62%),radial-gradient(600px 400px at -8% 115%,rgba(192,132,252,.16),transparent 60%),#0B0B0F}
-.brand{display:flex;align-items:center;gap:18px}.brand svg{width:60px;height:60px}
-.name{font-size:34px;font-weight:650;letter-spacing:-.02em}.tag{font-size:22px;color:#A1A1AA;margin-top:2px}
-h1{margin-top:auto;font-size:68px;line-height:1.04;font-weight:650;letter-spacing:-.035em;max-width:900px}
-h1 em{font-style:normal;color:#C084FC}
-.ar{font-family:Plex,Inter;direction:rtl;text-align:left;font-size:30px;color:#D4D4D8;margin-top:18px}
-.foot{margin-top:38px;padding-top:24px;border-top:1px solid #26262F;display:flex;justify-content:space-between;font-size:22px;color:#A1A1AA}
+body{width:1200px;height:630px;font-family:Sans,sans-serif;color:oklch(22% 0.012 60);background:oklch(97.6% 0.008 85);padding:64px 80px;display:flex;flex-direction:column}
+.top{display:flex;align-items:baseline;gap:18px;border-bottom:2px solid oklch(22% 0.012 60);padding-bottom:18px}
+.name{font-family:NR;font-size:38px;font-weight:600;letter-spacing:-.01em}.tag{font-size:22px;color:oklch(49% 0.012 60)}
+h1{margin-top:auto;font-family:NR;font-size:76px;line-height:1.02;font-weight:500;letter-spacing:-.025em;max-width:960px}
+h1 span{color:oklch(47% 0.15 28)}
+.ar{font-family:Naskh,NR;font-weight:600;font-size:34px;color:oklch(40% 0.012 60);margin-top:18px}
+.foot{margin-top:40px;padding-top:18px;border-top:1px solid oklch(86.5% 0.012 75);display:flex;justify-content:space-between;font-size:22px;color:oklch(40% 0.012 60)}
 </style></head><body>
-<div class="brand">${mark}<div><div class="name">Fund Match</div><div class="tag">for LvlUp Ventures programs</div></div></div>
-<h1>Find the LvlUp Ventures program that <em>fits you</em>.</h1>
-<p class="ar" dir="rtl">اكتشف برنامج LvlUp Ventures الأنسب لك</p>
+<div class="top"><span class="name">Fund Match</span><span class="tag">for LvlUp Ventures programs</span></div>
+<h1>Find the LvlUp Ventures program that <span>fits you</span>.</h1>
+<p class="ar" dir="rtl" style="text-align:left">اكتشف برنامج LvlUp Ventures الأنسب لك</p>
 <div class="foot"><span>Independent guide. Not an official LvlUp Ventures tool.</span><span>kfarrag.com/lvlup</span></div>
 </body></html>`
 

@@ -76,3 +76,8 @@ export const ThumbDown = (p: SVGProps<SVGSVGElement>) => (
     <path d="M17 13V4h3v9h-3zM17 13l-4 8a2 2 0 0 1-2-2v-4H5.5a2 2 0 0 1-2-2.3l1.2-7A2 2 0 0 1 6.7 4H17" />
   </svg>
 )
+export const ChevronDown = (p: SVGProps<SVGSVGElement>) => (
+  <svg {...base({ width: 16, height: 16, ...p })}>
+    <path d="M6 9l6 6 6-6" />
+  </svg>
+)

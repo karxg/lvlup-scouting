@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'wouter'
 import { Checklist, FundFacts, FundTitle, RangeHeadline } from '../components/FundDetails'
-import { ArrowLeft, ArrowRight } from '../components/Icons'
+import { ArrowLeft, ArrowRight, ChevronDown } from '../components/Icons'
 import { Shell } from '../components/Shell'
 import { DATA_LAST_UPDATED, FUNDS, MRR_LOWER_BOUND } from '../data/funds'
 import { useLang } from '../i18n/LangContext'
@@ -21,7 +21,7 @@ function matchesType(f: Fund, type: TypeFilter): boolean {
 }
 
 export function Funds() {
-  const { t, lang } = useLang()
+  const { t } = useLang()
   const ft = t.funds
   const [type, setType] = useState<TypeFilter | ''>('')
   const [stage, setStage] = useState<Stage | ''>('')
@@ -39,39 +39,32 @@ export function Funds() {
   )
 
   const select =
-    'h-12 w-full appearance-none rounded-xl border border-line bg-surface px-4 text-[15px] text-ink focus:border-accent focus:outline-none'
-  const chevron = {
-    backgroundImage:
-      "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E\")",
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: lang === 'ar' ? 'left 1rem center' : 'right 1rem center',
-  }
+    'h-12 w-full appearance-none rounded-[var(--radius-sm)] border border-rule-strong bg-paper ps-3 pe-9 text-[15px] text-ink hover:border-ink focus-visible:border-ink'
 
   return (
     <Shell>
-      <div className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6 sm:py-12">
-        <Link
-          href="/"
-          className="mb-6 inline-flex h-12 items-center gap-2 rounded-full border border-line px-5 text-sm font-medium hover:border-line-strong hover:bg-surface"
-        >
-          <ArrowLeft className="flip-rtl" />
+      <div className="mx-auto w-full max-w-5xl px-4 py-6 sm:px-8 sm:py-10">
+        <Link href="/" className="link text-[15px]">
+          <ArrowLeft className="flip-rtl" width={18} height={18} />
           {ft.back}
         </Link>
-        <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">{ft.title}</h1>
-        <p className="mt-3 max-w-2xl text-lg text-muted">{ft.subtitle}</p>
+        <h1 className="mt-4 text-[clamp(2.25rem,7vw,3.75rem)] leading-[1.02] tracking-[-0.02em]">{ft.title}</h1>
+        <p className="mt-3 max-w-2xl text-lg leading-relaxed text-ink-2">{ft.subtitle}</p>
 
-        <div className="mt-8 grid gap-4 rounded-[var(--radius-card)] border border-line bg-surface/60 p-4 sm:grid-cols-3">
-          <fieldset className="sm:col-span-3">
-            <legend className="mb-2 text-sm font-medium text-muted">{ft.filterType}</legend>
-            <div className="flex flex-wrap gap-2">
+        <div className="mt-8 grid gap-x-6 gap-y-4 border-y border-ink py-4 md:grid-cols-[auto_minmax(0,1fr)_minmax(0,1fr)]">
+          <fieldset className="min-w-0">
+            <legend className="mb-1.5 text-[13px] text-ink-3">{ft.filterType}</legend>
+            <div className="flex flex-wrap">
               {(['', ...TYPE_FILTERS] as const).map((v) => (
                 <button
                   key={v || 'any'}
                   type="button"
                   aria-pressed={type === v}
                   onClick={() => setType(v)}
-                  className={`h-12 rounded-full border px-4 text-sm font-medium transition-colors ${
-                    type === v ? 'border-accent bg-accent-soft text-ink' : 'border-line text-muted hover:text-ink'
+                  className={`-me-px h-12 border px-3.5 text-[15px] whitespace-nowrap transition-colors first:rounded-s-[var(--radius-sm)] last:rounded-e-[var(--radius-sm)] ${
+                    type === v
+                      ? 'relative z-10 border-ink bg-ink text-paper'
+                      : 'border-rule-strong text-ink hover:bg-paper-2'
                   }`}
                 >
                   {v ? ft.typeFilter[v] : ft.any}
@@ -79,29 +72,41 @@ export function Funds() {
               ))}
             </div>
           </fieldset>
-          <label className="grid gap-2 text-sm font-medium text-muted">
+          <label className="grid min-w-0 gap-1.5 text-[13px] text-ink-3">
             {ft.filterStage}
-            <select value={stage} onChange={(e) => setStage(e.target.value as Stage | '')} className={select} style={chevron}>
-              <option value="">{ft.any}</option>
-              {STAGES.map((s) => (
-                <option key={s} value={s}>
-                  {t.questions.stage.options[s].label}
-                </option>
-              ))}
-            </select>
+            <span className="relative">
+              <select value={stage} onChange={(e) => setStage(e.target.value as Stage | '')} className={select}>
+                <option value="">{ft.any}</option>
+                {STAGES.map((s) => (
+                  <option key={s} value={s}>
+                    {t.questions.stage.options[s].label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="pointer-events-none absolute end-3 top-1/2 -translate-y-1/2 text-ink-2" />
+            </span>
           </label>
-          <label className="grid gap-2 text-sm font-medium text-muted">
+          <label className="grid min-w-0 gap-1.5 text-[13px] text-ink-3">
             {ft.filterMrr}
-            <select value={mrr} onChange={(e) => setMrr(e.target.value as Mrr | '')} className={select} style={chevron}>
-              <option value="">{ft.any}</option>
-              {MRRS.map((m) => (
-                <option key={m} value={m}>
-                  {t.questions.mrr.options[m].label}
-                </option>
-              ))}
-            </select>
+            <span className="relative">
+              <select value={mrr} onChange={(e) => setMrr(e.target.value as Mrr | '')} className={select}>
+                <option value="">{ft.any}</option>
+                {MRRS.map((m) => (
+                  <option key={m} value={m}>
+                    {t.questions.mrr.options[m].label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="pointer-events-none absolute end-3 top-1/2 -translate-y-1/2 text-ink-2" />
+            </span>
           </label>
-          <div className="flex items-end">
+        </div>
+
+        <div className="flex flex-wrap items-center justify-between gap-x-4">
+          <p className="py-3 text-sm text-ink-2" aria-live="polite">
+            {ft.count(shown.length, FUNDS.length)}
+          </p>
+          {(type || stage || mrr) && (
             <button
               type="button"
               onClick={() => {
@@ -109,43 +114,39 @@ export function Funds() {
                 setStage('')
                 setMrr('')
               }}
-              className="h-12 rounded-full px-4 text-sm font-medium text-accent underline-offset-4 hover:underline"
+              className="link text-sm"
             >
               {ft.clear}
             </button>
-          </div>
+          )}
         </div>
 
-        <p className="mt-6 text-sm text-muted" aria-live="polite">
-          {ft.count(shown.length, FUNDS.length)}
-        </p>
-
         {shown.length === 0 ? (
-          <p className="mt-6 rounded-[var(--radius-card)] border border-line bg-surface p-6 text-muted">{ft.empty}</p>
+          <p className="border-t border-rule py-6 text-ink-2">{ft.empty}</p>
         ) : (
-          <ul className="mt-4 grid gap-4 md:grid-cols-2">
+          <ol className="border-t border-rule">
             {shown.map((f) => (
-              <li key={f.id} className="flex flex-col rounded-[var(--radius-card)] border border-line bg-surface p-5 sm:p-6">
-                <FundTitle fund={f} as="h2" />
-                <RangeHeadline fund={f} className="mt-4 text-3xl" />
-                <div className="mt-5 border-t border-line pt-5">
-                  <FundFacts fund={f} />
+              <li
+                key={f.id}
+                className="grid gap-6 border-b border-rule py-7 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-10"
+              >
+                <div>
+                  <FundTitle fund={f} as="h2" />
+                  <RangeHeadline fund={f} className="mt-4 text-[30px] leading-none" />
                 </div>
-                <div className="mt-5 border-t border-line pt-5">
+                <div className="grid gap-5">
+                  <FundFacts fund={f} />
                   <Checklist fund={f} />
                 </div>
               </li>
             ))}
-          </ul>
+          </ol>
         )}
 
-        <p role="note" className="mt-10 rounded-[var(--radius-card)] border border-line bg-surface p-4 text-sm leading-relaxed text-muted">
+        <p role="note" className="mt-10 max-w-2xl border border-rule-strong p-4 text-sm leading-relaxed text-ink-2">
           {t.results.disclaimer} {ft.lastChecked(DATA_LAST_UPDATED)}
         </p>
-        <Link
-          href="/"
-          className="mt-6 inline-flex h-14 items-center gap-2.5 rounded-full bg-accent px-7 text-base font-semibold text-bg hover:opacity-90"
-        >
+        <Link href="/" className="btn btn-primary mt-6 min-h-14 px-7 text-base">
           {ft.findMatch}
           <ArrowRight className="flip-rtl" />
         </Link>

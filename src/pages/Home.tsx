@@ -15,9 +15,9 @@ import { estimatedLength, questionPath } from '../lib/questions'
 import { webhookEnabled } from '../lib/webhook'
 
 const variants: Variants = {
-  enter: (d: number) => ({ x: d * 48, opacity: 0 }),
+  enter: (d: number) => ({ x: d * 24, opacity: 0 }),
   center: { x: 0, opacity: 1 },
-  exit: (d: number) => ({ x: d * -48, opacity: 0 }),
+  exit: (d: number) => ({ x: d * -24, opacity: 0 }),
 }
 
 export function Home() {
@@ -99,12 +99,8 @@ export function Home() {
         </m.div>
       </AnimatePresence>
       {(state.screen === 'question' || state.screen === 'welcome') && Object.keys(state.answers).length > 0 && (
-        <div className="mx-auto w-full max-w-2xl px-4 sm:px-6">
-          <button
-            type="button"
-            onClick={quiz.restart}
-            className="min-h-12 text-sm text-muted underline underline-offset-4 hover:text-ink"
-          >
+        <div className="mx-auto w-full max-w-2xl px-4 sm:px-8">
+          <button type="button" onClick={quiz.restart} className="link text-sm font-normal text-ink-2">
             {t.nav.startOver}
           </button>
         </div>

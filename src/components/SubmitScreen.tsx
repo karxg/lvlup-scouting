@@ -37,12 +37,12 @@ export function SubmitScreen({ answers, onDone }: { answers: Answers; onDone: ()
   }
 
   const field =
-    'h-12 w-full rounded-xl border border-line bg-surface px-4 text-base text-ink placeholder:text-subtle focus:border-accent focus:outline-none'
+    'h-12 w-full rounded-[var(--radius-sm)] border border-rule-strong bg-paper px-3 text-base text-ink hover:border-ink focus-visible:border-ink'
 
   return (
-    <div className="mx-auto flex w-full max-w-lg flex-1 flex-col justify-center px-4 py-10">
-      <h1 className="text-3xl font-semibold tracking-tight">{s.title}</h1>
-      <p className="mt-3 text-[15px] leading-relaxed text-muted">{s.subtitle}</p>
+    <div className="mx-auto flex w-full max-w-lg flex-1 flex-col justify-center px-4 py-12 sm:px-8">
+      <h1 className="text-[clamp(1.85rem,5.5vw,2.5rem)] leading-tight">{s.title}</h1>
+      <p className="mt-3 text-[15px] leading-relaxed text-ink-2">{s.subtitle}</p>
       <form onSubmit={onSubmit} noValidate className="mt-7 grid gap-4">
         {(
           [
@@ -56,20 +56,20 @@ export function SubmitScreen({ answers, onDone }: { answers: Answers; onDone: ()
             <input name={name} type={type} autoComplete={autoComplete} required={name === 'email'} className={field} />
           </label>
         ))}
-        <p aria-live="polite" className="min-h-5 text-sm text-accent">
+        <p aria-live="polite" className="min-h-5 text-sm font-medium text-accent">
           {error}
         </p>
         <button
           type="submit"
           disabled={sending}
-          className="h-12 rounded-full bg-accent px-6 text-sm font-semibold text-bg hover:opacity-90 disabled:opacity-60"
+          className="btn btn-primary"
         >
           {sending ? s.sending : s.send}
         </button>
         <button
           type="button"
           onClick={onDone}
-          className="h-12 rounded-full border border-line px-6 text-sm font-medium hover:bg-surface"
+          className="btn btn-secondary"
         >
           {s.skip}
         </button>

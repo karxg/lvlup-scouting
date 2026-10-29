@@ -7,7 +7,7 @@ interface Props {
   onClose: () => void
   title: string
   children: ReactNode
-  /** "sheet" slides up from the bottom on small screens. */
+  /** "sheet" docks to the bottom on small screens. */
   variant?: 'modal' | 'sheet'
 }
 
@@ -50,24 +50,24 @@ export function Dialog({ open, onClose, title, children, variant = 'modal' }: Pr
     >
       {open && (
         <div
-          className={`border border-line bg-surface p-6 text-start shadow-2xl shadow-black/60 ${
-            sheet ? 'rounded-t-3xl pb-[max(1.5rem,env(safe-area-inset-bottom))] sm:rounded-3xl' : 'rounded-3xl'
+          className={`border border-ink bg-paper text-start ${
+            sheet ? 'border-x-0 border-b-0 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:border' : ''
           }`}
         >
-          <div className="mb-4 flex items-start justify-between gap-4">
-            <h2 id="dialog-title" className="text-xl font-semibold tracking-tight">
+          <div className="flex items-center justify-between gap-4 border-b border-rule ps-5 pe-2">
+            <h2 id="dialog-title" className="py-3 text-xl leading-tight">
               {title}
             </h2>
             <button
               type="button"
               onClick={onClose}
               aria-label={t.about.close}
-              className="-m-2 inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-muted hover:bg-surface-2 hover:text-ink"
+              className="inline-flex h-12 w-12 shrink-0 items-center justify-center text-ink-2 hover:text-ink"
             >
               <Close />
             </button>
           </div>
-          {children}
+          <div className="p-5">{children}</div>
         </div>
       )}
     </dialog>
