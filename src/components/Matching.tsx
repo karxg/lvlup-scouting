@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from 'framer-motion'
+import { m, useReducedMotion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { useLang } from '../i18n/LangContext'
 
@@ -23,7 +23,7 @@ export function Matching({ onDone }: { onDone: () => void }) {
     <div className="flex flex-1 flex-col items-center justify-center px-4 py-10 text-center">
       <div className="relative h-20 w-20" aria-hidden="true">
         {[0, 1, 2].map((i) => (
-          <motion.span
+          <m.span
             key={i}
             className="absolute inset-0 rounded-full border border-accent"
             initial={{ scale: 0.4, opacity: 0.9 }}

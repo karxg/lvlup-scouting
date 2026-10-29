@@ -78,7 +78,7 @@ export function Results({ answers, onBack, onRetake }: Props) {
             <FundFacts fund={result.top.fund} />
           </div>
           <div className="mt-6 border-t border-line pt-6">
-            <Checklist fund={result.top.fund} />
+            <Checklist fund={result.top.fund} as="h2" />
           </div>
         </div>
       </article>
@@ -193,7 +193,7 @@ function SmallFundCard({ match, chip }: { match: FundMatch; chip?: string }) {
         </summary>
         <div className="space-y-5 pt-2 pb-1">
           <FundFacts fund={f} />
-          <Checklist fund={f} />
+          <Checklist fund={f} as="h4" />
         </div>
       </details>
     </article>

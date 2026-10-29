@@ -21,14 +21,14 @@ export function Shell({ children, top, hideLangToggle }: Props) {
     <div className="flex min-h-dvh flex-col">
       {top}
       <header className="mx-auto flex w-full max-w-5xl items-center justify-between gap-3 px-4 pt-5 sm:px-6">
-        <Link href="/" className="-m-1 rounded-lg p-1" aria-label={`${t.brand.name} · ${t.brand.tagline}`}>
+        <Link href="/" className="-m-1 rounded-lg p-1">
           <Wordmark />
         </Link>
         {!hideLangToggle && (
           <button
             type="button"
             onClick={() => setLang(other)}
-            aria-label={t.lang.switchLabel}
+            aria-label={`${t.lang.other} · ${t.lang.switchLabel}`}
             className="inline-flex h-12 min-w-12 items-center justify-center rounded-full border border-line px-4 text-sm font-medium text-ink transition-colors hover:border-line-strong hover:bg-surface"
           >
             <span lang={other} className={other === 'ar' ? 'font-[family-name:var(--font-arabic)]' : 'font-sans'}>

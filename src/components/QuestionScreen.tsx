@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from 'framer-motion'
+import { m, useIsPresent, useReducedMotion } from 'framer-motion'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useLang } from '../i18n/LangContext'
 import type { Question } from '../lib/questions'
@@ -32,6 +32,8 @@ export function QuestionScreen({ question: q, answers, index, total, onChange, o
   const atMax = multi && q.max !== undefined && selected.length >= q.max
   const [confirming, setConfirming] = useState<string | null>(null)
   const reduce = useReducedMotion()
+  // False while this screen animates out; it must stop reacting to keys immediately.
+  const present = useIsPresent()
 
   const root = useRef<HTMLDivElement>(null)
   const optionRefs = useRef<(HTMLButtonElement | null)[]>([])
@@ -59,9 +61,9 @@ export function QuestionScreen({ question: q, answers, index, total, onChange, o
   }
 
   // Latest values for the window-level key handler.
-  const live = useRef({ choose, selected, onNext, onBack })
+  const live = useRef({ choose, selected, onNext, onBack, active: true })
   useLayoutEffect(() => {
-    live.current = { choose, selected, onNext, onBack }
+    live.current = { choose, selected, onNext, onBack, active: present && !confirming }
   })
 
   useEffect(() => {
@@ -69,7 +71,8 @@ export function QuestionScreen({ question: q, answers, index, total, onChange, o
       if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey) return
       const target = e.target as HTMLElement
       if (target.closest('input, textarea, select, dialog')) return
-      const { choose, selected, onNext, onBack } = live.current
+      const { choose, selected, onNext, onBack, active } = live.current
+      if (!active) return
       const focusedIdx = optionRefs.current.findIndex((el) => el === document.activeElement)
       const nothingFocused = target === document.body || target === root.current
 
@@ -157,7 +160,7 @@ export function QuestionScreen({ question: q, answers, index, total, onChange, o
           const disabled = !isSel && atMax
           const o = options[opt]
           return (
-            <motion.button
+            <m.button
               key={opt}
               ref={(el) => {
                 optionRefs.current[i] = el
@@ -195,7 +198,7 @@ export function QuestionScreen({ question: q, answers, index, total, onChange, o
               >
                 <Check />
               </span>
-            </motion.button>
+            </m.button>
           )
         })}
       </div>

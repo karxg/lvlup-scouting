@@ -14,16 +14,19 @@ export function Rich({ text: raw }: { text: string }) {
     // Keep the ⓘ glued to the term's last word so it never wraps onto its own line.
     const words = m[2]
     const cut = words.lastIndexOf(' ') + 1
+    const end = i + m[0].length
+    const punct = /^[?.,!:;؟،؛]+/.exec(text.slice(end))?.[0] ?? ''
     parts.push(
       <Fragment key={i}>
         {words.slice(0, cut)}
         <span className="whitespace-nowrap">
           {words.slice(cut)}
           <TermInfo id={m[1] as TermId} />
+          {punct}
         </span>
       </Fragment>,
     )
-    last = i + m[0].length
+    last = end + punct.length
   }
   if (last < text.length) parts.push(text.slice(last))
   return <>{parts}</>

@@ -28,7 +28,7 @@ export function FundTitle({ fund, as: As = 'h3', size = 'md' }: { fund: Fund; as
           {fund.name}
         </As>
         <FundBadge fund={fund} />
-        <span className="text-xs text-subtle">{t.fundType[fund.type]}</span>
+        <span className="text-xs text-muted">{t.fundType[fund.type]}</span>
       </div>
       <p className={`mt-2 leading-relaxed text-muted ${size === 'lg' ? 'text-base sm:text-lg' : 'text-[15px]'}`}>
         <Rich text={fund.description[lang]} />
@@ -37,11 +37,11 @@ export function FundTitle({ fund, as: As = 'h3', size = 'md' }: { fund: Fund; as
   )
 }
 
-export function Checklist({ fund }: { fund: Fund }) {
+export function Checklist({ fund, as: As = 'h3' }: { fund: Fund; as?: 'h2' | 'h3' | 'h4' }) {
   const { lang, t } = useLang()
   return (
     <div>
-      <h4 className="mb-2 text-sm font-semibold text-ink">{t.results.checklist}</h4>
+      <As className="mb-2 text-sm font-semibold text-ink">{t.results.checklist}</As>
       <ul className="space-y-2">
         {fund.checklist.map((item) => (
           <li key={item.en} className="flex gap-2.5 text-[15px] leading-snug text-muted">

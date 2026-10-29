@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useReducedMotion, type Variants } from 'framer-motion'
+import { AnimatePresence, m, useReducedMotion, type Variants } from 'framer-motion'
 import { useEffect, useRef } from 'react'
 import { Matching } from '../components/Matching'
 import { LanguageChoice } from '../components/LanguageChoice'
@@ -11,7 +11,7 @@ import { Welcome } from '../components/Welcome'
 import { plain } from '../i18n'
 import { useLang } from '../i18n/LangContext'
 import { useQuiz } from '../hooks/useQuiz'
-import { questionPath } from '../lib/questions'
+import { estimatedLength, questionPath } from '../lib/questions'
 import { webhookEnabled } from '../lib/webhook'
 
 const variants: Variants = {
@@ -28,6 +28,8 @@ export function Home() {
   const path = questionPath(state.answers)
   const step = Math.min(state.step, path.length - 1)
   const question = path[step]
+  // Counts undecided branches, so the total only ever shrinks as the founder answers.
+  const total = Math.max(estimatedLength(state.answers).questions, path.length)
   const rtl = t.dir === 'rtl'
 
   // Direction-aware slide, mirrored in RTL; fade only when reduced motion is requested.
@@ -38,7 +40,7 @@ export function Home() {
   // Announce each new question to screen readers.
   const announce =
     state.screen === 'question'
-      ? `${t.nav.progress(step + 1, path.length)}. ${plain(t.questions[question.id].title)}`
+      ? `${t.nav.progress(step + 1, total)}. ${plain(t.questions[question.id].title)}`
       : state.screen === 'matching'
         ? t.matching.title
         : ''
@@ -54,19 +56,19 @@ export function Home() {
   }, [key])
 
   const progress =
-    state.screen === 'question' ? step / path.length : state.screen === 'welcome' || state.screen === 'lang' ? 0 : 1
+    state.screen === 'question' ? step / total : state.screen === 'welcome' || state.screen === 'lang' ? 0 : 1
   const showBar = state.screen === 'question' || state.screen === 'matching'
 
   return (
     <Shell
       hideLangToggle={state.screen === 'lang'}
-      top={showBar ? <ProgressBar value={progress} current={step + 1} total={path.length} /> : null}
+      top={showBar ? <ProgressBar value={progress} current={step + 1} total={total} /> : null}
     >
       <p className="sr-only" aria-live="polite" aria-atomic="true">
         {announce}
       </p>
       <AnimatePresence mode="wait" custom={d} initial={false}>
-        <motion.div
+        <m.div
           key={key}
           custom={d}
           variants={variants}
@@ -83,7 +85,7 @@ export function Home() {
               question={question}
               answers={state.answers}
               index={step}
-              total={path.length}
+              total={total}
               onChange={quiz.setAnswers}
               onNext={quiz.next}
               onBack={quiz.back}
@@ -94,7 +96,7 @@ export function Home() {
           {state.screen === 'results' && (
             <Results answers={state.answers} onBack={quiz.back} onRetake={quiz.restart} />
           )}
-        </motion.div>
+        </m.div>
       </AnimatePresence>
       {(state.screen === 'question' || state.screen === 'welcome') && Object.keys(state.answers).length > 0 && (
         <div className="mx-auto w-full max-w-2xl px-4 sm:px-6">

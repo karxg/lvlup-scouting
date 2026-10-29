@@ -1,0 +1,151 @@
+// Fund Match: Cloudflare Worker with static assets, served at https://kfarrag.com/lvlup/.
+// Vite builds into dist/lvlup, and `assets.directory` is dist, so files are served under /lvlup/...
+// Routes cover every casing of "lvlup" (Cloudflare route patterns are case-sensitive);
+// the Worker redirects them to lowercase. Nothing outside /lvlup* is routed here.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "lvlup-fund-matching",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": false,
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "none"
+  },
+  "observability": {
+    "enabled": true
+  },
+  "routes": [
+    {
+      "pattern": "kfarrag.com/lvlup*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/LVLUP*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/LVLUp*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/LVLuP*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/LVLup*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/LVlUP*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/LVlUp*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/LVluP*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/LVlup*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/LvLUP*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/LvLUp*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/LvLuP*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/LvLup*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/LvlUP*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/LvlUp*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/LvluP*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/Lvlup*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/lVLUP*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/lVLUp*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/lVLuP*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/lVLup*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/lVlUP*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/lVlUp*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/lVluP*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/lVlup*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/lvLUP*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/lvLUp*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/lvLuP*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/lvLup*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/lvlUP*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/lvlUp*",
+      "zone_name": "kfarrag.com"
+    },
+    {
+      "pattern": "kfarrag.com/lvluP*",
+      "zone_name": "kfarrag.com"
+    }
+  ]
+}
